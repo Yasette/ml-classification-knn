@@ -17,3 +17,6 @@ This Streamlit-based web application uses machine learning to classify Iris flow
 ## Installation
 
 1. Clone the repository:
+  '''bash
+    git clone https://github.com/yourusername/iris-classification-app.git
+    cd iris-classification-app
