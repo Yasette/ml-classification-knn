@@ -141,15 +141,10 @@ with col1:
         
         iris_species = iris.target_names[prediction[0]]
         st.markdown(f"<h3>Predicted Species: <span style='color: #FF5733;'>{iris_species}</span> 🌼</h3>", unsafe_allow_html=True)
-
+        
         st.markdown("### Prediction Probability")
         prob_df = pd.DataFrame(prediction_proba, columns=iris.target_names)
-        try:
-            styled_df = prob_df.style.background_gradient(cmap='Greens').format("{:.2%}")
-            st.dataframe(styled_df)
-        except ImportError:
-            st.dataframe(prob_df.style.format("{:.2%}"))
-            st.warning("Note: Enhanced styling is not available due to missing dependencies.")
+        st.dataframe(prob_df.style.background_gradient(cmap='Greens').format("{:.2%}"))
 
 with col2:
     st.markdown("<div class='section-header'>📊 Model Performance</div>", unsafe_allow_html=True)
