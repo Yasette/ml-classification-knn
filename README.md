@@ -53,6 +53,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Project Link: [https://github.com/Yasette/iris-classification-app](https://github.com/yourusername/iris-classification-app)
 
+Deployed App; [https://ml-classification-knn-yasemin.streamlit.app/](https://ml-classification-knn-yasemin.streamlit.app/)
+
 ## Acknowledgements
 
 - [Streamlit](https://www.streamlit.io/)
