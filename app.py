@@ -9,6 +9,8 @@ from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.inspection import permutation_importance
+import matplotlib.pyplot as plt
 
 # Set page configuration
 st.set_page_config(page_title="🌸 Iris Classifier", layout="wide", initial_sidebar_state="expanded")
@@ -57,6 +59,12 @@ st.markdown("""
     .metric-label {
         font-size: 0.9rem;
         color: #666;
+    }
+    .plot-container {
+        background-color: white;
+        padding: 1rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -158,6 +166,37 @@ with col2:
         st.markdown("<div class='metric-card'><div class='metric-value'>{:.2f}%</div><div class='metric-label'>Recall 🔍</div></div>".format(recall*100), unsafe_allow_html=True)
     with col_f1:
         st.markdown("<div class='metric-card'><div class='metric-value'>{:.2f}%</div><div class='metric-label'>F1 Score 🏆</div></div>".format(f1*100), unsafe_allow_html=True)
+
+# Feature Importance Section
+st.markdown("<div class='section-header'>🔑 Feature Importance</div>", unsafe_allow_html=True)
+
+# Calculate feature importance
+perm_importance = permutation_importance(model, X_test_scaled, y_test, n_repeats=10, random_state=42)
+feature_importance = pd.DataFrame({
+    'Feature': iris.feature_names,
+    'Importance': perm_importance.importances_mean
+}).sort_values('Importance', ascending=False)
+
+# Plot feature importance
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.bar(feature_importance['Feature'], feature_importance['Importance'], color='#4CAF50')
+ax.set_title(f"Feature Importance for {selected_model}", fontsize=16)
+ax.set_xlabel("Features", fontsize=12)
+ax.set_ylabel("Importance Score", fontsize=12)
+plt.xticks(rotation=45, ha='right')
+
+# Add value labels on top of each bar
+for i, v in enumerate(feature_importance['Importance']):
+    ax.text(i, v, f'{v:.2f}', ha='center', va='bottom')
+
+st.markdown("<div class='plot-container'>", unsafe_allow_html=True)
+st.pyplot(fig)
+st.markdown("</div>", unsafe_allow_html=True)
+
+st.markdown("""
+The feature importance chart shows how much each feature contributes to the model's predictions.
+Higher scores indicate more important features. This can help understand which measurements are most crucial for identifying Iris species.
+""")
 
 # Model Description
 st.markdown("<div class='section-header'>📘 Model Information</div>", unsafe_allow_html=True)
